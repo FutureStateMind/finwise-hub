@@ -65,7 +65,15 @@ git clone <repository-url>
 cd finwise-hub
 ```
 
+
 2. Install Python dependencies:
+```bash
+python3 -m venv finwise_env
+
+source finwise_env/bin/activate
+
+```
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -79,6 +87,9 @@ python manage.py migrate
 ```bash
 python manage.py createsuperuser
 ```
+finwise
+finwise@gmail.com
+finwise@123
 
 5. Start the Django development server:
 ```bash
