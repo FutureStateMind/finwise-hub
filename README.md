@@ -89,7 +89,7 @@ python manage.py createsuperuser
 ```
 finwise
 finwise@gmail.com
-finwise@1-3
+finwise@1-3rt
 
 5. Start the Django development server:
 ```bash
