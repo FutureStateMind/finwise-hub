@@ -16,7 +16,7 @@
             min="0"
             step="0.01"
             placeholder="Enter your monthly income"
-            @input="coerceIncome"
+            @input="validateIncome"
           />
         </div>
       </label>
@@ -113,6 +113,8 @@
 </template>
 
 <script>
+const DEFAULT_NEW_SUBCAT_PERCENT = 10;
+
 export default {
   name: "BudgetPlanner",
   data() {
@@ -214,7 +216,7 @@ export default {
     this.restore();
   },
   methods: {
-    coerceIncome() {
+    validateIncome() {
       if (this.monthlyIncome === "" || this.monthlyIncome === null || isNaN(this.monthlyIncome)) return;
       if (this.monthlyIncome < 0) this.monthlyIncome = 0;
     },
@@ -241,7 +243,7 @@ export default {
       cat.subcategories.push({
         id: cryptoRandom(),
         name: "",
-        percent: remaining > 0 ? Math.min(remaining, 10) : 0
+        percent: remaining > 0 ? Math.min(remaining, DEFAULT_NEW_SUBCAT_PERCENT) : 0
       });
       this.persist();
     },
@@ -281,6 +283,9 @@ export default {
       navigator.clipboard.writeText(text).then(() => {
         this.copied = true;
         setTimeout(() => (this.copied = false), 1200);
+      }).catch((error) => {
+        console.error('Failed to copy to clipboard:', error);
+        alert('Failed to copy to clipboard. Please try again or copy manually.');
       });
     },
     resetAll() {
