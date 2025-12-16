@@ -46,6 +46,9 @@ ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
+# Install Python development tools globally
+RUN pip3 install autopep8 flake8
+
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
@@ -53,6 +56,10 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 # Set the default user
 USER $USERNAME
+
+# Set environment variables for Python
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/home/vscode/.local/bin:${PATH}"
 
 # ============================================================================
 # PROJECT-SPECIFIC DEPENDENCIES
@@ -72,10 +79,6 @@ USER $USERNAME
 # - Backend: pip install -r requirements.txt
 # - Frontend: cd frontend && npm install
 # ============================================================================
-
-# Set environment variables for Python
-ENV PYTHONUNBUFFERED=1
-ENV PATH="/home/${USERNAME}/.local/bin:${PATH}"
 
 # Expose ports for Django and Vue.js development servers
 EXPOSE 8000 5173
