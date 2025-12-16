@@ -115,6 +115,37 @@
 <script>
 const DEFAULT_NEW_SUBCAT_PERCENT = 10;
 
+// Default subcategory configurations
+const DEFAULT_SUBCATEGORIES = {
+  needs: [
+    { name: "Housing", percent: 40 },
+    { name: "Groceries", percent: 25 },
+    { name: "Utilities", percent: 15 },
+    { name: "Transport", percent: 10 },
+    { name: "Insurance", percent: 10 }
+  ],
+  wishes: [
+    { name: "Dining Out", percent: 40 },
+    { name: "Shopping", percent: 35 },
+    { name: "Travel", percent: 25 }
+  ],
+  investments: [
+    { name: "Emergency Fund", percent: 40 },
+    { name: "Retirement", percent: 40 },
+    { name: "Brokerage", percent: 20 }
+  ],
+  entertainment: [
+    { name: "Movies/Shows", percent: 40 },
+    { name: "Games", percent: 30 },
+    { name: "Events", percent: 30 }
+  ],
+  others: [
+    { name: "Gifts", percent: 30 },
+    { name: "Charity", percent: 30 },
+    { name: "Miscellaneous", percent: 40 }
+  ]
+};
+
 export default {
   name: "BudgetPlanner",
   data() {
@@ -129,13 +160,7 @@ export default {
           percent: 30,
           color: "#2E86AB",
           defaults: ["Housing", "Groceries", "Utilities", "Transport", "Insurance"],
-          subcategories: [
-            { id: cryptoRandom(), name: "Housing", percent: 40 },
-            { id: cryptoRandom(), name: "Groceries", percent: 25 },
-            { id: cryptoRandom(), name: "Utilities", percent: 15 },
-            { id: cryptoRandom(), name: "Transport", percent: 10 },
-            { id: cryptoRandom(), name: "Insurance", percent: 10 }
-          ]
+          subcategories: DEFAULT_SUBCATEGORIES.needs.map(s => ({ id: cryptoRandom(), ...s }))
         },
         {
           key: "wishes",
@@ -143,11 +168,7 @@ export default {
           percent: 10,
           color: "#7D3C98",
           defaults: ["Dining Out", "Shopping", "Travel"],
-          subcategories: [
-            { id: cryptoRandom(), name: "Dining Out", percent: 40 },
-            { id: cryptoRandom(), name: "Shopping", percent: 35 },
-            { id: cryptoRandom(), name: "Travel", percent: 25 }
-          ]
+          subcategories: DEFAULT_SUBCATEGORIES.wishes.map(s => ({ id: cryptoRandom(), ...s }))
         },
         {
           key: "investments",
@@ -155,11 +176,7 @@ export default {
           percent: 30,
           color: "#239B56",
           defaults: ["Emergency Fund", "Retirement", "Brokerage"],
-          subcategories: [
-            { id: cryptoRandom(), name: "Emergency Fund", percent: 40 },
-            { id: cryptoRandom(), name: "Retirement", percent: 40 },
-            { id: cryptoRandom(), name: "Brokerage", percent: 20 }
-          ]
+          subcategories: DEFAULT_SUBCATEGORIES.investments.map(s => ({ id: cryptoRandom(), ...s }))
         },
         {
           key: "entertainment",
@@ -167,11 +184,7 @@ export default {
           percent: 10,
           color: "#D68910",
           defaults: ["Movies/Shows", "Games", "Events"],
-          subcategories: [
-            { id: cryptoRandom(), name: "Movies/Shows", percent: 40 },
-            { id: cryptoRandom(), name: "Games", percent: 30 },
-            { id: cryptoRandom(), name: "Events", percent: 30 }
-          ]
+          subcategories: DEFAULT_SUBCATEGORIES.entertainment.map(s => ({ id: cryptoRandom(), ...s }))
         },
         {
           key: "others",
@@ -179,11 +192,7 @@ export default {
           percent: 20,
           color: "#C0392B",
           defaults: ["Gifts", "Charity", "Miscellaneous"],
-          subcategories: [
-            { id: cryptoRandom(), name: "Gifts", percent: 30 },
-            { id: cryptoRandom(), name: "Charity", percent: 30 },
-            { id: cryptoRandom(), name: "Miscellaneous", percent: 40 }
-          ]
+          subcategories: DEFAULT_SUBCATEGORIES.others.map(s => ({ id: cryptoRandom(), ...s }))
         }
       ]
     };
@@ -280,6 +289,13 @@ export default {
         lines.push("");
       });
       const text = lines.join("\n");
+      
+      // Check if clipboard API is available
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        alert('Clipboard API not supported. Please copy manually:\n\n' + text);
+        return;
+      }
+      
       navigator.clipboard.writeText(text).then(() => {
         this.copied = true;
         setTimeout(() => (this.copied = false), 1200);
@@ -292,14 +308,16 @@ export default {
       // Clear local state and storage
       localStorage.removeItem("finwise_budget_v1");
       this.monthlyIncome = null;
-      // Reset subcategory percentages to defaults
+      // Reset subcategories to defaults
       this.categories.forEach((c) => {
-        const defaults = c.defaults || [];
-        c.subcategories = (c.subcategories || []).map((s, i) => ({
-          id: cryptoRandom(),
-          name: defaults[i] || "",
-          percent: s.percent // keep existing unless you'd like to set fixed defaults
-        }));
+        const defaultSubcats = DEFAULT_SUBCATEGORIES[c.key];
+        if (defaultSubcats) {
+          c.subcategories = defaultSubcats.map(s => ({
+            id: cryptoRandom(),
+            name: s.name,
+            percent: s.percent
+          }));
+        }
       });
     },
     persist() {
