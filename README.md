@@ -65,7 +65,7 @@ For the most consistent development experience across macOS, Linux, and Windows,
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/FutureStateMind/finwise-hub.git
 cd finwise-hub
 ```
 
