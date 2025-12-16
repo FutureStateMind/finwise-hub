@@ -59,6 +59,7 @@ USER $USERNAME
 
 # Set environment variables for Python
 ENV PYTHONUNBUFFERED=1
+# Add user's local bin to PATH for project dependencies installed with --user
 ENV PATH="/home/vscode/.local/bin:${PATH}"
 
 # ============================================================================
