@@ -52,7 +52,84 @@ A comprehensive personal finance management application built with Django and Vu
 
 ## Installation & Setup
 
-### Prerequisites
+### Option 1: Development Container (Recommended)
+
+For the most consistent development experience across macOS, Linux, and Windows, use the provided development container.
+
+#### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) or Docker Engine
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) for VS Code
+
+#### Quick Start
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd finwise-hub
+```
+
+2. Open in VS Code:
+```bash
+code .
+```
+
+3. When prompted, click "Reopen in Container" or:
+   - Press `F1` (or `Ctrl+Shift+P` / `Cmd+Shift+P`)
+   - Type "Dev Containers: Reopen in Container"
+   - Press Enter
+
+4. VS Code will build the container (first time only, takes a few minutes) and reopen the project inside it.
+
+5. Once inside the container, install dependencies:
+
+**Backend:**
+```bash
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser  # Optional: create admin user
+python manage.py runserver
+```
+
+**Frontend (in a new terminal):**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+6. Access the application:
+   - Backend API: http://localhost:8000
+   - Frontend: http://localhost:5173
+
+#### What's Included
+
+The development container includes:
+- Ubuntu 22.04 base image
+- Python 3 with pip
+- Node.js 20 LTS with npm
+- Git, curl, and essential build tools
+- Pre-configured VS Code extensions:
+  - Python and Pylance
+  - Django support
+  - Vue.js (Volar) and TypeScript
+  - ESLint and Prettier
+  - GitLens and Git Graph
+  - Docker tools
+
+#### Container Features
+
+- **Consistent Environment**: Same development setup for all team members
+- **Port Forwarding**: Automatic forwarding of ports 8000 (Django) and 5173 (Vue.js)
+- **Non-root User**: Runs as `vscode` user for security
+- **Persistent Storage**: Your code changes persist outside the container
+- **Extension Sync**: All team members get the same VS Code extensions
+
+### Option 2: Local Installation
+
+If you prefer to install dependencies directly on your machine:
+
+#### Prerequisites
 - Python 3.12 or higher
 - Node.js 20 or higher
 - npm 10 or higher
