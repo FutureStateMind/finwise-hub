@@ -7,6 +7,7 @@ import Renewals from '../views/Renewals.vue';
 import Investments from '../views/Investments.vue';
 import AIAdvisor from '../views/AIAdvisor.vue';
 import Profile from '../views/Profile.vue';
+import BudgetPlanner from '../views/BudgetPlanner.vue';
 
 const routes = [
   {
@@ -59,6 +60,12 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/budget',
+    name: 'BudgetPlanner',
+    component: BudgetPlanner,
     meta: { requiresAuth: true }
   }
 ];
