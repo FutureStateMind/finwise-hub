@@ -8,6 +8,7 @@
         <router-link to="/bank-accounts">Bank Accounts</router-link>
         <router-link to="/investments">Investments</router-link>
         <router-link to="/renewals">Renewals</router-link>
+        <router-link to="/budget">Budget Planner</router-link>
         <router-link to="/ai-advisor" class="ai-link">AI Advisor</router-link>
       </div>
       
