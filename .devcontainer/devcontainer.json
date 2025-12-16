@@ -1,0 +1,94 @@
+{
+	"name": "FinWise Hub Development Container",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+	
+	// Set *default* container specific settings.json values on container create.
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/bin/python3",
+				"python.linting.enabled": true,
+				"python.linting.pylintEnabled": false,
+				"python.linting.flake8Enabled": true,
+				"python.formatting.autopep8Path": "/usr/local/bin/autopep8",
+				"python.formatting.provider": "autopep8",
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+					"source.fixAll.eslint": "explicit"
+				},
+				"files.eol": "\n",
+				"terminal.integrated.defaultProfile.linux": "bash"
+			},
+			
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				// Python extensions
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				
+				// Django extensions
+				"batisteo.vscode-django",
+				
+				// Vue.js and JavaScript extensions
+				"Vue.volar",
+				"Vue.vscode-typescript-vue-plugin",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				
+				// Git and version control
+				"mhutchie.git-graph",
+				"eamodio.gitlens",
+				
+				// General development extensions
+				"ms-vscode.vscode-typescript-next",
+				"usernamehw.errorlens",
+				"streetsidesoftware.code-spell-checker",
+				
+				// Docker and container tools
+				"ms-azuretools.vscode-docker",
+				
+				// REST API testing
+				"humao.rest-client"
+			]
+		}
+	},
+	
+	// Forward ports for Django backend and Vue.js frontend
+	"forwardPorts": [8000, 5173],
+	"portsAttributes": {
+		"8000": {
+			"label": "Django Backend",
+			"onAutoForward": "notify"
+		},
+		"5173": {
+			"label": "Vue.js Frontend",
+			"onAutoForward": "notify"
+		}
+	},
+	
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// Uncomment to automatically install dependencies on container creation:
+	// "postCreateCommand": "pip3 install -r requirements.txt && cd frontend && npm install",
+	
+	// Use 'postStartCommand' to run commands each time the container starts.
+	// "postStartCommand": "git config --global --add safe.directory /workspace",
+	
+	// Configure tool-specific properties.
+	"features": {
+		// Additional features can be added here if needed
+	},
+	
+	// Connect as non-root user (vscode) for security
+	"remoteUser": "vscode",
+	
+	// Set the workspace folder inside the container
+	"workspaceFolder": "/workspace",
+	
+	// Mount the workspace to the container
+	"mounts": [
+		"source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+	]
+}
